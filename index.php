@@ -7,6 +7,14 @@ $save_path = '_tmp';
 // Disable caching.
 header('Cache-Control: no-store');
 
+// 添加 list 功能：在验证 note 之前
+if (isset($_GET['note']) && $_GET['note'] === 'list') {
+    $files = array_diff(scandir($save_path), ['.', '..']);
+    header('Content-Type: text/plain');
+    echo implode("\n", $files);
+    die;
+}
+
 // If no note name is provided, or if the name is too long, or if it contains invalid characters.
 if (!isset($_GET['note']) || strlen($_GET['note']) > 64 || !preg_match('/^[a-zA-Z0-9_-]+$/', $_GET['note'])) {
 
